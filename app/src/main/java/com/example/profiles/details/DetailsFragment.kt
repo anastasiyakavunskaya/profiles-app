@@ -1,4 +1,4 @@
-package com.example.profiles.profiles
+package com.example.profiles.details
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,21 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.profiles.R
-import com.example.profiles.databinding.FragmentProfilesBinding
+import com.example.profiles.databinding.FragmentDetailsBinding
 
 
-class ProfilesFragment : Fragment() {
+class DetailsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentProfilesBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_profiles, container, false)
-
-        val viewModel = ProfilesViewModel()
-
+        val binding: FragmentDetailsBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_details, container, false)
 
         return binding.root
     }
+
 }
