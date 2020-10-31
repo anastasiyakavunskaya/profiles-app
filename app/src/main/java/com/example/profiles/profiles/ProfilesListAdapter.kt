@@ -8,11 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.profiles.databinding.ProfileItemBinding
 import com.example.profiles.network.Profile
 
-class ProfilesListAdapter(): ListAdapter<Profile, ProfilesListAdapter.ProfilesViewHolder>(DiffCallback) {
+class ProfilesListAdapter: ListAdapter<Profile, ProfilesListAdapter.ProfilesViewHolder>(DiffCallback) {
     class ProfilesViewHolder(private var binding: ProfileItemBinding):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(profile: Profile) {
-            binding.profile = profile
+            binding.itemName.text = profile.name
+            binding.itemEmail.text = profile.email
+            if(profile.isActive){
+                binding.itemState.text = "Active"
+            } else binding.itemState.text = "Not Active"
             binding.executePendingBindings()
         }
     }

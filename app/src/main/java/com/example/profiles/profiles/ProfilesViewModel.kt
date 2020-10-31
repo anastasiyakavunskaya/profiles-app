@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.profiles.network.Profile
 import androidx.lifecycle.viewModelScope
+import com.example.profiles.network.ProfileApi
 import kotlinx.coroutines.launch
 
 
@@ -14,7 +15,12 @@ class ProfilesViewModel: ViewModel() {
 
     fun getProfiles() {
         viewModelScope.launch {
-
+            try {
+                val result = ProfileApi.retrofitService.getProfiles()
+                _profiles.value = result
+            } catch (e: Exception) {
+                _profiles.value = ArrayList()
+            }
         }
     }
 }
