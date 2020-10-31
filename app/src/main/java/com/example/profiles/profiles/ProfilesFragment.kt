@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.profiles.R
 import com.example.profiles.databinding.FragmentProfilesBinding
@@ -29,7 +30,11 @@ class ProfilesFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        val adapter = ProfilesListAdapter()
+        val adapter =
+            ProfilesListAdapter(ProfileListener {
+                this.findNavController().navigate(R.id.action_profilesFragment_to_detailsFragment)
+            })
+
         val manager = LinearLayoutManager(activity)
         binding.recycler.layoutManager = manager
         binding.recycler.adapter = adapter
