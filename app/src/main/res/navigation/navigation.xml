@@ -18,5 +18,9 @@
         android:id="@+id/detailsFragment"
         android:name="com.example.profiles.details.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="profile"
+            app:argType="com.example.profiles.network.Profile" />
+    </fragment>
 </navigation>

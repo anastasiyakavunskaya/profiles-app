@@ -32,7 +32,7 @@ class ProfilesFragment : Fragment() {
 
         val adapter =
             ProfilesListAdapter(ProfileListener {
-                this.findNavController().navigate(R.id.action_profilesFragment_to_detailsFragment)
+                this.findNavController().navigate(ProfilesFragmentDirections.actionProfilesFragmentToDetailsFragment(it))
             })
 
         val manager = LinearLayoutManager(activity)
@@ -42,6 +42,7 @@ class ProfilesFragment : Fragment() {
         viewModel.profiles.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
+
         return binding.root
     }
 }
