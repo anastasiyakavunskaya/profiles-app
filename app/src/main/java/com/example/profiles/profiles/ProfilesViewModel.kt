@@ -1,26 +1,41 @@
 package com.example.profiles.profiles
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.example.profiles.database.getDatabase
 import com.example.profiles.network.Profile
-import androidx.lifecycle.viewModelScope
 import com.example.profiles.network.ProfileApi
+import com.example.profiles.repository.ProfilesRepository
 import kotlinx.coroutines.launch
 
 
-class ProfilesViewModel: ViewModel() {
-    private var _profiles = MutableLiveData<List<Profile>>()
-    val profiles: LiveData<List<Profile>> = _profiles
+class ProfilesViewModel(application: Application): AndroidViewModel(application) {
 
-    fun getProfiles() {
+    private val database = getDatabase(application)
+    private val profilesRepository = ProfilesRepository(database)
+
+    /*private val _profiles = MutableLiveData<List<Profile>>()
+    val profiles: LiveData<List<Profile>> = _profiles*/
+
+    init {
+
         viewModelScope.launch {
-            try {
-                val result = ProfileApi.retrofitService.getProfiles()
-                _profiles.value = result
-            } catch (e: Exception) {
-                _profiles.value = ArrayList()
+            profilesRepository.refreshProfiles()
+        }
+    }
+    val profiles = profilesRepository.profiles
+
+
+
+
+
+    class Factory(val app: Application) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(ProfilesViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return ProfilesViewModel(app) as T
             }
+            throw IllegalArgumentException("Unable to construct viewmodel")
         }
     }
 }

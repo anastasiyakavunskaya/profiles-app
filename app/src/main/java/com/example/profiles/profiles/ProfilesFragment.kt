@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,15 +19,18 @@ import com.example.profiles.network.Profile
 
 class ProfilesFragment : Fragment() {
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding: FragmentProfilesBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_profiles, container, false)
-
-        val viewModel = ProfilesViewModel()
-        viewModel.getProfiles()
+        val activity = requireNotNull(this.activity)
+        val viewModel: ProfilesViewModel =
+            ViewModelProvider(this, ProfilesViewModel.Factory(activity.application))
+                .get(ProfilesViewModel::class.java)
 
         binding.lifecycleOwner = this
 

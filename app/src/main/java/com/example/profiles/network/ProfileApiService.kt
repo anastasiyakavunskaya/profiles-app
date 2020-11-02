@@ -1,7 +1,9 @@
 package com.example.profiles.network
 
+import androidx.lifecycle.LiveData
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -20,7 +22,8 @@ private val retrofit = Retrofit.Builder()
 interface ProfileApiService {
 
     @GET("users.json?alt=media&token=e3672c23-b1a5-4ca7-bb77-b6580d75810c")
-    suspend fun getProfiles(): MutableList<Profile>
+    suspend fun getProfilesAsync(): MutableList<Profile>
+    //suspend fun getProfiles(): MutableList<Profile>
 }
 
 object ProfileApi {
