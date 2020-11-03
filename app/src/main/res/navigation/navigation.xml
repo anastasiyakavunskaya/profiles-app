@@ -22,5 +22,8 @@
         <argument
             android:name="profile"
             app:argType="com.example.profiles.network.Profile" />
+        <action
+            android:id="@+id/action_detailsFragment_self"
+            app:destination="@id/detailsFragment" />
     </fragment>
 </navigation>
