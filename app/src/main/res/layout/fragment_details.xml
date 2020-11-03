@@ -125,5 +125,13 @@
             android:contentDescription="Favourite fruit"
             app:layout_constraintStart_toEndOf="@+id/fruit_title"
             app:layout_constraintTop_toBottomOf="@+id/eye_color_indicator" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registered" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

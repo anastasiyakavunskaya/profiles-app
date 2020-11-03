@@ -13,6 +13,8 @@ interface ProfileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg profiles: DatabaseProfile)
 
+    @Query("SELECT * FROM databaseprofile WHERE id IN(:profileId)")
+    fun getFriend(profileId: ArrayList<Int>): LiveData<List<DatabaseProfile>>
 
 }
 
