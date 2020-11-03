@@ -23,7 +23,6 @@ interface ProfileApiService {
 
     @GET("users.json?alt=media&token=e3672c23-b1a5-4ca7-bb77-b6580d75810c")
     suspend fun getProfiles(): MutableList<Profile>
-    //suspend fun getProfiles(): MutableList<Profile>
 }
 
 object ProfileApi {

@@ -14,9 +14,6 @@ class ProfilesViewModel(application: Application): AndroidViewModel(application)
     private val database = getDatabase(application)
     private val profilesRepository = ProfilesRepository(database)
 
-    /*private val _profiles = MutableLiveData<List<Profile>>()
-    val profiles: LiveData<List<Profile>> = _profiles*/
-
     init {
 
         viewModelScope.launch {
