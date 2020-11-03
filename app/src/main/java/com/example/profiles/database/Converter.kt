@@ -4,16 +4,16 @@ import androidx.room.TypeConverter
 import com.example.profiles.network.Friend
 
 class Converter {
+    @ExperimentalStdlibApi
     @TypeConverter
     fun fromFriends(value: String): MutableList<Friend> {
-       /* val arrays: MutableList<String> =
+       val arrays: MutableList<String> =
             value.split("\\s*,\\s*".toRegex()).toMutableList()
+        arrays.removeLast()
         return arrays.map {
             Friend(
                 id = it.toInt())
-        }.toMutableList()*/
-        //TODO converter from Friends
-        return mutableListOf(Friend(id = 1), Friend(id = 2))
+        }.toMutableList()
     }
 
     @TypeConverter
