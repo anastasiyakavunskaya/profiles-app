@@ -3,11 +3,12 @@ package com.example.profiles.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
-import com.example.profiles.network.Friend
-import com.example.profiles.network.FriendsContainer
-import com.example.profiles.network.Profile
+import androidx.room.TypeConverters
+import com.example.profiles.network.*
+import java.util.*
 
 @Entity
+@TypeConverters(Converter::class)
 data class DatabaseProfile(
     @PrimaryKey
     val id: Int,
@@ -23,12 +24,10 @@ data class DatabaseProfile(
     val registered: String,
     val latitude: Double,
     val longitude: Double,
-    //val friends: FriendsContainer,
+    val friends: MutableList<Friend>,
     val favoriteFruit: String)
 
-
-
-fun List<DatabaseProfile>.asDomainModelProfile(): List<Profile> {
+fun List<DatabaseProfile>.asDomainModel(): List<Profile> {
     return map {
         Profile (
             id = it.id,
@@ -44,7 +43,7 @@ fun List<DatabaseProfile>.asDomainModelProfile(): List<Profile> {
             registered = it.registered,
             latitude = it.latitude,
             longitude = it.longitude,
-            //friends = it.friends.asDomainModel(),
+            friends = it.friends,
             favoriteFruit = it.favoriteFruit)
     }
 }

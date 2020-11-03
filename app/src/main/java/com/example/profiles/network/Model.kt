@@ -1,16 +1,15 @@
 package com.example.profiles.network
 
+import androidx.room.TypeConverters
+import com.example.profiles.database.Converter
 import java.io.Serializable
 
 data class Profile(
 val id: Int,
-//val guid: String,
 val isActive: Boolean,
-//val balance: String,
 val age: Int,
 val eyeColor: String,
 val name: String,
-//val gender: String,
 val company: String,
 val email: String,
 val phone: String,
@@ -19,7 +18,7 @@ val about: String,
 val registered: String,
 val latitude: Double,
 val longitude: Double,
-//val friends: MutableList<Friend>,
+val friends: MutableList<Friend>,
 val favoriteFruit: String
 ): Serializable{
 }

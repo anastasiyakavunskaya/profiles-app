@@ -2,14 +2,14 @@ package com.example.profiles.network
 
 import android.net.Network
 import androidx.room.Database
+import androidx.room.TypeConverters
+import com.example.profiles.database.Converter
 import com.example.profiles.database.DatabaseProfile
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class NetworkProfileContainer(val profiles: List<Profile>)
 
-@JsonClass(generateAdapter = true)
-data class FriendsContainer(val friends: MutableList<Friend>)
 
 fun NetworkProfileContainer.asDatabaseModel(): Array<DatabaseProfile> {
     return profiles.map {
@@ -27,22 +27,9 @@ fun NetworkProfileContainer.asDatabaseModel(): Array<DatabaseProfile> {
             registered = it.registered,
             latitude = it.latitude,
             longitude = it.longitude,
-            //friends = FriendsContainer(it.friends),
+            friends = it.friends,
             favoriteFruit = it.favoriteFruit)
     }.toTypedArray()
 }
 
 
-
-/*
-
-fun FriendsContainer.asDatabaseModel(): MutableList<Int> {
-    val list = mutableListOf<Int>()
-
-    forEach {
-        list.add(.id)
-    }
-    return list
-}
-
-*/

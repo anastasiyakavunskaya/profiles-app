@@ -6,8 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.profiles.R
 import com.example.profiles.databinding.FragmentDetailsBinding
+import com.example.profiles.profiles.ProfileListener
+import com.example.profiles.profiles.ProfilesFragmentDirections
+import com.example.profiles.profiles.ProfilesListAdapter
 
 
 class DetailsFragment : Fragment() {
@@ -32,6 +37,19 @@ class DetailsFragment : Fragment() {
             "apple" -> binding.fruitIndicator.setImageDrawable(resources.getDrawable(R.drawable.apple))
             "strawberry" -> binding.fruitIndicator.setImageDrawable(resources.getDrawable(R.drawable.strawberry))
         }
+/*
+        binding.lifecycleOwner = this
+
+        val adapter =
+            ProfilesListAdapter(ProfileListener {
+                this.findNavController().navigate(ProfilesFragmentDirections.actionProfilesFragmentToDetailsFragment(it))
+            })
+
+        val manager = LinearLayoutManager(activity)
+        binding.recycler.layoutManager = manager
+        binding.recycler.adapter = adapter
+
+*/
 
         //binding.eyeColorIndicator.setBackgroundColor()
         return binding.root
