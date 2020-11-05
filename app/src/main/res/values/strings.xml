@@ -2,9 +2,11 @@
     <string name ="app_name">Profiles</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name ="hello_blank_fragment">Hello blank fragment</string>
-    <string name ="name_format">Name: %s</string>
     <string name ="age_format">Age: %s</string>
-    <string name ="company_format">COMPANY: %s</string>
-    <string name ="email_format">E-mail: %s</string>
+    <string name ="company_format">Company: %s</string>
+    <string name ="email_format">e-mail: %s</string>
+    <string name ="phone_format">tel: %s</string>
+    <string name ="address_format">Address: %s</string>
     <string name="registered_format">Registered: %s</string>
+    <string name="coordinates_format">Coordinates: %s, %s</string>
 </resources>

@@ -1,12 +1,15 @@
 package com.example.profiles.profiles
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.profiles.R
 import com.example.profiles.databinding.ProfileItemBinding
 import com.example.profiles.network.Profile
+import java.security.AccessController.getContext
 
 class ProfilesListAdapter (private val clickListener: ProfileListener):
                 ListAdapter<Profile, ProfilesListAdapter.ProfilesViewHolder>(DiffCallback) {
@@ -15,13 +18,17 @@ class ProfilesListAdapter (private val clickListener: ProfileListener):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(profile: Profile, clickListener: ProfileListener) {
             binding.profile = profile
-            //binding.clickListener = clickListener
 
             if(profile.isActive){
-                binding.itemState.text = "Profile is Active"
+                binding.itemState.text = "(profile is active)"
+                binding.activityIndicator.setImageResource(R.drawable.activity_true)
                 binding.clickListener = clickListener
 
-            } else binding.itemState.text = "Profile is Not Active"
+            } else
+            {
+                binding.itemState.text = "(profile is not active)"
+                binding.activityIndicator.setImageResource(R.drawable.activity_false)
+            }
             binding.executePendingBindings()
         }
     }
@@ -46,6 +53,7 @@ class ProfilesListAdapter (private val clickListener: ProfileListener):
         holder.bind(profile, clickListener)
     }
 }
+
 
 class ProfileListener (val clickListener: (profile: Profile) -> Unit) {
     fun onClick(profile: Profile) = clickListener(profile)
