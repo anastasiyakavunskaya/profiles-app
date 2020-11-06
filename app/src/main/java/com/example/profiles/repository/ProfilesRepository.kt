@@ -17,10 +17,6 @@ class ProfilesRepository(private val database: ProfilesDatabase) {
             it.asDomainModel()
         }
 
-
-
-
-
     suspend fun refreshProfiles() {
         withContext(Dispatchers.IO) {
             try {
@@ -31,7 +27,6 @@ class ProfilesRepository(private val database: ProfilesDatabase) {
                 //TODO
                      }
         }
-
     }
 
    fun getFriends(friendsIds: MutableList<Friend>): LiveData<List<Profile>>{
@@ -44,13 +39,4 @@ class ProfilesRepository(private val database: ProfilesDatabase) {
                it.asDomainModel()
            }
     }
-
-
-/*
-
-    return Transformations
-    .map(database.profileDao.getFriends(id)) {
-        it.asDomainModel()
-    }*/
-
 }

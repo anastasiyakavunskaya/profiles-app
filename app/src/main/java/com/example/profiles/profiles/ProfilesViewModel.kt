@@ -13,15 +13,18 @@ class ProfilesViewModel(application: Application): AndroidViewModel(application)
 
     private val database = getDatabase(application)
     private val profilesRepository = ProfilesRepository(database)
-
-    init {
-
-        viewModelScope.launch {
-            profilesRepository.refreshProfiles()
-        }
-    }
     val profiles = profilesRepository.profiles
 
+    fun refreshProfiles(): Boolean{
+        return try {
+            viewModelScope.launch {
+                profilesRepository.refreshProfiles()
+            }
+            true
+        } catch (e: Exception){
+            false
+        }
+    }
 
 
 
