@@ -16,8 +16,7 @@ import com.example.profiles.R
 import com.example.profiles.databinding.FragmentDetailsBinding
 import com.example.profiles.profiles.ProfileListener
 import com.example.profiles.profiles.ProfilesListAdapter
-import java.text.SimpleDateFormat
-import java.util.*
+import com.google.android.material.snackbar.Snackbar
 
 
 class DetailsFragment : Fragment() {
@@ -47,9 +46,19 @@ class DetailsFragment : Fragment() {
                 )
             )
         }
+        binding.coordinates.setOnClickListener {
+                val mapIntent = Intent(Intent.ACTION_VIEW)
+                mapIntent.data = Uri.parse("geo:"+
+                        Uri.encode(profile.latitude.toString()+", "+profile.longitude.toString()))
+                requireContext().startActivity(
+                    Intent.createChooser(
+                        mapIntent,"Geo..."
+                    )
+                )
+        }
         binding.phone.setOnClickListener {
-            val callIntent = Intent(Intent.ACTION_CALL)
-            callIntent.data = Uri.parse("tel:"+Uri.encode(profile.email))
+            val callIntent = Intent(Intent.ACTION_DIAL)
+            callIntent.data = Uri.parse("tel:"+Uri.encode(profile.phone))
             requireContext().startActivity(
                 Intent.createChooser(
                     callIntent,"Call..."

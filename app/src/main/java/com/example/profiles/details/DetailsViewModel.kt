@@ -36,13 +36,10 @@ class DetailsViewModel(application: Application, val profile: Profile): AndroidV
     }
 
     fun formatCoordinates(): String {
-        //широта
         val lat = profile.latitude
-        //долгота
         val lon = profile.longitude
-
-        return "Location: "+ Location.convert(lon, FORMAT_SECONDS) +" ; "+ Location.convert(lat, FORMAT_SECONDS)
-     }
+        return "Location: "+ convert(lat, FORMAT_DEGREES)+", "+ convert(lon, FORMAT_DEGREES)
+    }
 
 
     class Factory(val app: Application,val  profile: Profile) : ViewModelProvider.Factory {
