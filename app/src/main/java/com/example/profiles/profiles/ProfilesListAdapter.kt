@@ -1,6 +1,5 @@
 package com.example.profiles.profiles
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.profiles.R
 import com.example.profiles.databinding.ProfileItemBinding
 import com.example.profiles.network.Profile
-import java.security.AccessController.getContext
 
 class ProfilesListAdapter (private val clickListener: ProfileListener):
                 ListAdapter<Profile, ProfilesListAdapter.ProfilesViewHolder>(DiffCallback) {

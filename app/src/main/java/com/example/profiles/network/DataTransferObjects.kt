@@ -1,9 +1,5 @@
 package com.example.profiles.network
 
-import android.net.Network
-import androidx.room.Database
-import androidx.room.TypeConverters
-import com.example.profiles.database.Converter
 import com.example.profiles.database.DatabaseProfile
 import com.squareup.moshi.JsonClass
 

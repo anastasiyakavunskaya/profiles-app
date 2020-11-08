@@ -1,17 +1,13 @@
 package com.example.profiles.details
 
 import android.app.Application
-import android.content.Intent
-import android.location.Location
 import android.location.Location.*
-import android.net.Uri
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.*
+import com.example.profiles.R
 import com.example.profiles.database.getDatabase
-import com.example.profiles.network.Friend
 import com.example.profiles.network.Profile
 import com.example.profiles.repository.ProfilesRepository
-import kotlinx.coroutines.launch
+
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,20 +21,37 @@ class DetailsViewModel(application: Application, val profile: Profile): AndroidV
     fun formatDate(): String{
         val date = profile.registered
 
-        var sdf = SimpleDateFormat("yyyy-mm-dd")
-        var stf = SimpleDateFormat("hh-mm")
+        var sdf = SimpleDateFormat("yyyy-mm-dd", Locale.US)
+        var stf = SimpleDateFormat("hh-mm", Locale.US)
         val newDay: Date = sdf.parse(date)!!
         val newTime: Date = stf.parse(date)!!
-        sdf = SimpleDateFormat("dd.mm.yy")
-        stf = SimpleDateFormat("hh:mm")
+        sdf = SimpleDateFormat("dd.mm.yy", Locale.US)
+        stf = SimpleDateFormat("hh:mm", Locale.US)
         val result = stf.format(newTime) +" "+ sdf.format(newDay)
         return "Registered: $result"
     }
 
-    fun formatCoordinates(): String {
+    fun formatLocation(): String {
         val lat = profile.latitude
         val lon = profile.longitude
-        return "Location: "+ convert(lat, FORMAT_DEGREES)+", "+ convert(lon, FORMAT_DEGREES)
+        return convert(lat, FORMAT_DEGREES)+", "+ convert(lon, FORMAT_DEGREES)
+    }
+    fun getEyeColor(): Int{
+        when(profile.eyeColor){
+            "brown" -> return R.drawable.brown_eyes
+            "green" -> return R.drawable.green_eyes
+            "blue" -> return R.drawable.blue_eyes
+        }
+        return R.drawable.unknown
+    }
+
+    fun getFruit(): Int{
+        when(profile.favoriteFruit){
+        "banana" -> return R.drawable.bananas
+        "apple" -> return R.drawable.apple
+        "strawberry" -> return R.drawable.strawberry
+        }
+        return R.drawable.unknown
     }
 
 
@@ -48,7 +61,7 @@ class DetailsViewModel(application: Application, val profile: Profile): AndroidV
                 @Suppress("UNCHECKED_CAST")
                 return DetailsViewModel(app, profile) as T
             }
-            throw IllegalArgumentException("Unable to construct viewmodel")
+            throw IllegalArgumentException("Unable to construct viewModel")
         }
     }
 }

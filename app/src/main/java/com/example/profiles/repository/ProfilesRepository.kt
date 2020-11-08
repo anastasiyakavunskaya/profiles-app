@@ -1,9 +1,8 @@
 package com.example.profiles.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.example.profiles.database.DatabaseProfile
 import com.example.profiles.database.ProfilesDatabase
 import com.example.profiles.database.asDomainModel
 import com.example.profiles.network.*
@@ -24,8 +23,8 @@ class ProfilesRepository(private val database: ProfilesDatabase) {
                     NetworkProfileContainer(ProfileApi.retrofitService.getProfiles())
                 database.profileDao.insertAll(*list.asDatabaseModel())
             } catch (e: Exception){
-                //TODO
-                     }
+                Log.d("d","$e")
+            }
         }
     }
 

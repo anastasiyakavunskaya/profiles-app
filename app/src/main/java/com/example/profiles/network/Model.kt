@@ -1,7 +1,5 @@
 package com.example.profiles.network
 
-import androidx.room.TypeConverters
-import com.example.profiles.database.Converter
 import java.io.Serializable
 
 data class Profile(
@@ -20,8 +18,7 @@ val latitude: Double,
 val longitude: Double,
 val friends: MutableList<Friend>,
 val favoriteFruit: String
-): Serializable{
-}
+): Serializable
 
 data class Friend(
      val id:Int
