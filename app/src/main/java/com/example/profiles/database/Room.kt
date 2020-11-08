@@ -7,13 +7,13 @@ import androidx.room.*
 @Dao
 interface ProfileDao {
 
-    @Query("SELECT * FROM databaseprofile")
+    @Query("SELECT * FROM databaseProfile")
     fun getProfiles(): LiveData<List<DatabaseProfile>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg profiles: DatabaseProfile)
 
-    @Query("SELECT * FROM databaseprofile WHERE id IN(:profileId)")
+    @Query("SELECT * FROM databaseProfile WHERE id IN(:profileId)")
     fun getFriend(profileId: ArrayList<Int>): LiveData<List<DatabaseProfile>>
 
 }

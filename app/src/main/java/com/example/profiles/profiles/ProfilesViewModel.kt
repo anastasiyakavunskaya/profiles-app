@@ -1,10 +1,11 @@
 package com.example.profiles.profiles
 
 import android.app.Application
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkRequest
 import androidx.lifecycle.*
 import com.example.profiles.database.getDatabase
-import com.example.profiles.network.Profile
-import com.example.profiles.network.ProfileApi
 import com.example.profiles.repository.ProfilesRepository
 import kotlinx.coroutines.launch
 
@@ -14,6 +15,8 @@ class ProfilesViewModel(application: Application): AndroidViewModel(application)
     private val database = getDatabase(application)
     private val profilesRepository = ProfilesRepository(database)
     val profiles = profilesRepository.profiles
+    var activity: Boolean = false
+
 
     fun refreshProfiles(): Boolean{
         return try {
@@ -27,6 +30,22 @@ class ProfilesViewModel(application: Application): AndroidViewModel(application)
     }
 
 
+    fun isNetworkActive(cm: ConnectivityManager): Boolean{
+        val builder: NetworkRequest.Builder = NetworkRequest.Builder()
+        cm.registerNetworkCallback(
+            builder.build(),
+            object : ConnectivityManager.NetworkCallback() {
+
+                override fun onAvailable(network: Network) {
+                    activity = true
+                }
+
+                override fun onLost(network: Network) {
+                    activity = false
+                }
+            })
+        return activity
+    }
 
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
@@ -35,7 +54,7 @@ class ProfilesViewModel(application: Application): AndroidViewModel(application)
                 @Suppress("UNCHECKED_CAST")
                 return ProfilesViewModel(app) as T
             }
-            throw IllegalArgumentException("Unable to construct viewmodel")
+            throw IllegalArgumentException("Unable to construct viewModel")
         }
     }
 }

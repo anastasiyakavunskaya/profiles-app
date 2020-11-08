@@ -2,7 +2,6 @@ package com.example.profiles.profiles
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -19,33 +18,31 @@ import com.google.android.material.snackbar.Snackbar
 class ProfilesFragment : Fragment() {
 
     private lateinit var viewModel: ProfilesViewModel
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentProfilesBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_profiles, container, false)
         viewModel =
-            ViewModelProvider(this, ProfilesViewModel.Factory(requireNotNull(this.activity).application))
+            ViewModelProvider(this,
+                ProfilesViewModel.Factory(requireNotNull(this.activity).application))
                 .get(ProfilesViewModel::class.java)
-
-        binding.lifecycleOwner = this
 
         val adapter =
             ProfilesListAdapter(ProfileListener {
-                this.findNavController().navigate(ProfilesFragmentDirections.actionProfilesFragmentToDetailsFragment(it))
+                this.findNavController()
+                    .navigate(ProfilesFragmentDirections.actionProfilesFragmentToDetailsFragment(it))
             })
-
+        binding.recycler.adapter = adapter
         val manager = LinearLayoutManager(activity)
         binding.recycler.layoutManager = manager
-        binding.recycler.adapter = adapter
-        setHasOptionsMenu(true)
+        binding.lifecycleOwner = this
         viewModel.profiles.observe(viewLifecycleOwner, Observer {
-            if(it.isEmpty()){
-                Snackbar.make(requireView(),"Download the list of profiles with the button in the toolbar.", Snackbar.LENGTH_LONG).show()
-            }
-            adapter.submitList(it)
+            if(it.isEmpty()){ Snackbar.make(requireView(),
+                "List of profiles is empty. Try to download it with the button in the toolbar.",
+                    Snackbar.LENGTH_LONG).show()
+            }else adapter.submitList(it)
         })
+        setHasOptionsMenu(true)
         return binding.root
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -54,14 +51,15 @@ class ProfilesFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
-        return if(isConnected){
-            (viewModel.refreshProfiles()
-                    || super.onOptionsItemSelected(item))
-        } else {
-            Snackbar.make(requireView(),"No network connection. Check your Internet connection and try again.", Snackbar.LENGTH_LONG).show()
+        val isNetworkActive = viewModel.isNetworkActive(
+        requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        return if(isNetworkActive){
+            (viewModel.refreshProfiles()|| super.onOptionsItemSelected(item))
+        }
+        else{ Snackbar.make(requireView(),
+                "No network connection. Check your Internet connection and try again.",
+                Snackbar.LENGTH_LONG
+            ).show()
             false
         }
     }

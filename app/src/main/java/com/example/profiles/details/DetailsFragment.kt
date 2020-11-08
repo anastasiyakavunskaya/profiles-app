@@ -16,82 +16,71 @@ import com.example.profiles.R
 import com.example.profiles.databinding.FragmentDetailsBinding
 import com.example.profiles.profiles.ProfileListener
 import com.example.profiles.profiles.ProfilesListAdapter
-import com.google.android.material.snackbar.Snackbar
 
 
 class DetailsFragment : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentDetailsBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_details, container, false)
         val activity = requireNotNull(this.activity)
-
         val profile = DetailsFragmentArgs.fromBundle(requireArguments()).profile
         binding.profile = profile
 
         val viewModel: DetailsViewModel =
             ViewModelProvider(this, DetailsViewModel.Factory(activity.application, profile))
                 .get(DetailsViewModel::class.java)
-
         binding.viewModel = viewModel
+        binding.registered.text = viewModel.formatDate()
+        binding.location.text = viewModel.formatLocation()
+
+
         binding.email.setOnClickListener {
-            val emailIntent = Intent(Intent.ACTION_SENDTO)
-            emailIntent.data = Uri.parse("mailto:"+Uri.encode(profile.email))
+            val email = Uri.parse("mailto:"+Uri.encode(profile.email))
+            val emailIntent = Intent(Intent.ACTION_SENDTO, email)
             requireContext().startActivity(
                 Intent.createChooser(
                     emailIntent,"Send mail..."
                 )
             )
         }
-        binding.coordinates.setOnClickListener {
-                val mapIntent = Intent(Intent.ACTION_VIEW)
-                mapIntent.data = Uri.parse("geo:"+
-                        Uri.encode(profile.latitude.toString()+", "+profile.longitude.toString()))
+
+        val lat = profile.latitude.toString()
+        val long = profile.longitude.toString()
+        binding.location.setOnClickListener {
+            val location = Uri.parse("geo:$lat,$long?q=$lat,$long")
+            val mapIntent = Intent(Intent.ACTION_VIEW, location)
                 requireContext().startActivity(
                     Intent.createChooser(
                         mapIntent,"Geo..."
                     )
                 )
         }
+
         binding.phone.setOnClickListener {
-            val callIntent = Intent(Intent.ACTION_DIAL)
-            callIntent.data = Uri.parse("tel:"+Uri.encode(profile.phone))
+            val phone =  Uri.parse("tel:"+Uri.encode(profile.phone))
+            val phoneIntent = Intent(Intent.ACTION_DIAL, phone)
             requireContext().startActivity(
                 Intent.createChooser(
-                    callIntent,"Call..."
+                    phoneIntent,"Call..."
                 )
             )
         }
 
-
-        when(profile.eyeColor){
-            "brown" -> binding.eyeColorIndicator.setImageResource(R.drawable.brown_eyes)
-            "green" -> binding.eyeColorIndicator.setImageResource(R.drawable.green_eyes)
-            "blue" -> binding.eyeColorIndicator.setImageResource(R.drawable.blue_eyes)
-        }
-        when(profile.favoriteFruit){
-            "banana" -> binding.fruitIndicator.setImageResource(R.drawable.bananas)
-            "apple" -> binding.fruitIndicator.setImageResource(R.drawable.apple)
-            "strawberry" -> binding.fruitIndicator.setImageResource(R.drawable.strawberry)
-        }
-
-        binding.registered.text = viewModel.formatDate()
-        binding.coordinates.text = viewModel.formatCoordinates()
-
+        binding.eyeColorIndicator.setImageResource(viewModel.getEyeColor())
+        binding.fruitIndicator.setImageResource(viewModel.getFruit())
         binding.lifecycleOwner = this
 
         val adapter =
             ProfilesListAdapter(ProfileListener {
-                this.findNavController().navigate(DetailsFragmentDirections.actionDetailsFragmentSelf(it))
+                this.findNavController()
+                    .navigate(DetailsFragmentDirections.actionDetailsFragmentSelf(it))
             })
-
+        binding.recycler.adapter = adapter
         val manager = LinearLayoutManager(activity)
         binding.recycler.layoutManager = manager
-        binding.recycler.adapter = adapter
-
+        binding.lifecycleOwner = this
         viewModel.friends.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
