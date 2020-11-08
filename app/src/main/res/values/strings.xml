@@ -1,14 +1,13 @@
 <resources>
     <string name ="app_name">Profiles</string>
-    <string name ="hello_blank_fragment">Hello blank fragment</string>
     <string name ="age_format">Age: %s</string>
     <string name ="company_format">Company: %s</string>
-    <string name ="email_format">e-mail: %s</string>
-    <string name ="phone_format">tel: %s</string>
+    <string name ="email_title">e-mail:</string>
+    <string name ="phone_title">tel:</string>
     <string name ="address_format">Address: %s</string>
     <string name="registered_format">Registered: %s</string>
-    <string name="coordinates_format">Coordinates: %s, %s</string>
-    <string name="friends_ешеду">Friends:</string>
+    <string name="location_title">location:</string>
+    <string name="friends_title">Friends:</string>
     <string name="favourite_fruit">Favourite fruit</string>
     <string name="eye_color_title">Eye color</string>
 </resources>
