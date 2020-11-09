@@ -22,4 +22,4 @@ val favoriteFruit: String
 
 data class Friend(
      val id:Int
-)
+):Serializable

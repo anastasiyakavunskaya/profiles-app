@@ -1,5 +1,6 @@
 package com.example.profiles.details
 
+import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,18 +15,24 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.profiles.R
 import com.example.profiles.databinding.FragmentDetailsBinding
+import com.example.profiles.network.Profile
 import com.example.profiles.profiles.ProfileListener
 import com.example.profiles.profiles.ProfilesListAdapter
 
 
 class DetailsFragment : Fragment() {
+    lateinit var binding: FragmentDetailsBinding
+    lateinit var profile: Profile
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentDetailsBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_details, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_details, container, false
+        )
         val activity = requireNotNull(this.activity)
-        val profile = DetailsFragmentArgs.fromBundle(requireArguments()).profile
+        profile = DetailsFragmentArgs.fromBundle(requireArguments()).profile
         binding.profile = profile
 
         val viewModel: DetailsViewModel =
@@ -35,13 +42,13 @@ class DetailsFragment : Fragment() {
         binding.registered.text = viewModel.formatDate()
         binding.location.text = viewModel.formatLocation()
 
-
         binding.email.setOnClickListener {
-            val email = Uri.parse("mailto:"+Uri.encode(profile.email))
+            val email = Uri.parse("mailto:" + Uri.encode(profile.email))
             val emailIntent = Intent(Intent.ACTION_SENDTO, email)
-            requireContext().startActivity(
+            emailIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            this.startActivity(
                 Intent.createChooser(
-                    emailIntent,"Send mail..."
+                    emailIntent, "Send mail..."
                 )
             )
         }
@@ -51,22 +58,26 @@ class DetailsFragment : Fragment() {
         binding.location.setOnClickListener {
             val location = Uri.parse("geo:$lat,$long?q=$lat,$long")
             val mapIntent = Intent(Intent.ACTION_VIEW, location)
-                requireContext().startActivity(
-                    Intent.createChooser(
-                        mapIntent,"Geo..."
-                    )
-                )
-        }
-
-        binding.phone.setOnClickListener {
-            val phone =  Uri.parse("tel:"+Uri.encode(profile.phone))
-            val phoneIntent = Intent(Intent.ACTION_DIAL, phone)
-            requireContext().startActivity(
+            mapIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            this.startActivity(
                 Intent.createChooser(
-                    phoneIntent,"Call..."
+                    mapIntent, "Geo..."
                 )
             )
         }
+
+        binding.phone.setOnClickListener {
+            val phone = Uri.parse("tel:" + Uri.encode(profile.phone))
+            val phoneIntent = Intent(Intent.ACTION_DIAL, phone)
+            phoneIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+            this.startActivity(
+                Intent.createChooser(
+                    phoneIntent, "Call..."
+                )
+            )
+        }
+
 
         binding.eyeColorIndicator.setImageResource(viewModel.getEyeColor())
         binding.fruitIndicator.setImageResource(viewModel.getFruit())
@@ -86,5 +97,4 @@ class DetailsFragment : Fragment() {
         })
         return binding.root
     }
-
 }
